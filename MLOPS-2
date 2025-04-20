@@ -1,0 +1,46 @@
+touch train_model.py
+
+
+# train_model.py
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+import pickle
+import sys
+
+# Load data
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Get hyperparameter from command-line argument
+n_estimators = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+
+# Train model
+model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
+model.fit(X_train, y_train)
+
+# Evaluate
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Model with {n_estimators} estimators => Accuracy: {accuracy:.4f}")
+
+# Save model with version
+version_name = f"model_v{n_estimators}.pkl"
+with open(version_name, "wb") as f:
+    pickle.dump(model, f)
+
+print(f"Model saved as {version_name}")
+
+
+
+
+python train_model.py 50
+
+touch results.txt
+
