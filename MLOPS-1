@@ -1,0 +1,14 @@
+MLOPS-1
+git clone https://github.com/your-username/mlops-practical.git
+cd mlops-practical
+
+echo "# MLOps Practical" > README.md
+git add README.md
+git commit -m "Added README"
+git push origin main
+
+git add sample-data.csv
+git commit -m "Added sample dataset"
+git push origin main
+
+git push origin main
