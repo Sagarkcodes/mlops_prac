@@ -1,0 +1,44 @@
+Open terminal in your project folder: cd ~/mlops_prac
+
+touch save_model.py
+
+# save_model.py
+
+from sklearn.datasets import load_iris
+from sklearn.ensemble import RandomForestClassifier
+import pickle
+
+# Load dataset
+X, y = load_iris(return_X_y=True)
+
+# Train model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X, y)
+
+# Save model to file
+with open("iris_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+print("✅ Model trained and saved as 'iris_model.pkl'")
+
+python save_model.py
+
+touch use_model.py
+
+# use_model.py
+
+import pickle
+from sklearn.datasets import load_iris
+
+# Load saved model
+with open("iris_model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+# Load sample data
+X, y = load_iris(return_X_y=True)
+
+# Make predictions
+predictions = model.predict(X[:5])
+print("✅ Predictions on sample input:", predictions)
+
+python use_model.py
