@@ -1,0 +1,70 @@
+Step 1: Set up the project
+mkdir model-performance
+cd model-performance
+mkdir results
+
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+pip install scikit-learn matplotlib seaborn
+
+Step 2: Python script to train models and visualize
+Create a Python file: visualize_performance.py
+
+import os
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, precision_recall_curve, classification_report
+
+# Create results directory
+os.makedirs("results", exist_ok=True)
+
+# Load dataset
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, test_size=0.3, random_state=42)
+
+# Train models
+log_model = LogisticRegression(max_iter=10000)
+rf_model = RandomForestClassifier()
+
+log_model.fit(X_train, X_test)
+rf_model.fit(X_train, y_train)
+
+# Make predictions
+log_preds = log_model.predict(X_test)
+rf_preds = rf_model.predict(X_test)
+
+# 1. Confusion Matrix
+fig, ax = plt.subplots(figsize=(6, 4))
+cm = confusion_matrix(y_test, rf_preds)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title('Random Forest Confusion Matrix')
+plt.savefig("results/confusion_matrix_rf.png")
+plt.close()
+
+# 2. Precision-Recall Curve for both models
+y_scores_log = log_model.predict_proba(X_test)[:, 1]
+y_scores_rf = rf_model.predict_proba(X_test)[:, 1]
+precision_log, recall_log, _ = precision_recall_curve(y_test, y_scores_log)
+precision_rf, recall_rf, _ = precision_recall_curve(y_test, y_scores_rf)
+
+plt.figure(figsize=(8, 5))
+plt.plot(recall_log, precision_log, label='Logistic Regression')
+plt.plot(recall_rf, precision_rf, label='Random Forest')
+plt.xlabel("Recall")
+plt.ylabel("Precision")
+plt.title("Precision-Recall Curve")
+plt.legend()
+plt.savefig("results/precision_recall_curve.png")
+plt.close()
+
+# 3. Compare performance
+print("Logistic Regression Report:\n", classification_report(y_test, log_preds))
+print("Random Forest Report:\n", classification_report(y_test, rf_preds))
+
+
+python visualize_performance.py
