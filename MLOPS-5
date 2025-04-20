@@ -35,6 +35,8 @@ plt.title("Age Distribution")
 plt.show()
 
 Step 6: Export Notebook to PDF
+jupyter nbconvert --to pdf EDA_Titanic.ipynb
+
 
 Step 7: Save Dependencies
 pip freeze > requirements.txt
