@@ -1,0 +1,60 @@
+Step 1: Create Project Folder
+
+mkdir ml_reproducible_pipeline
+cd ml_reproducible_pipeline
+
+Step 2: Set Up Virtual Environment
+python -m venv venv
+source venv/Scripts/activate
+
+pip install pandas matplotlib scikit-learn jupyter
+
+jupyter notebook   
+Create a new notebook and name it: ml_pipeline.ipynb.
+
+# Cell 1: Imports
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Cell 2: Load dataset
+wine = load_wine()
+X = pd.DataFrame(wine.data, columns=wine.feature_names)
+y = wine.target
+X.head()
+
+# Cell 3: Preprocessing
+X.isnull().sum()  # Check missing values
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Cell 4: Train model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Cell 5: Evaluate
+y_pred = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Cell 6: Visualize (optional)
+plt.barh(X.columns, model.feature_importances_)
+plt.title("Feature Importance")
+plt.tight_layout()
+plt.show()
+
+ Step 6: Save Environment Dependencies
+pip freeze > requirements.txt
+
+Step 7: Push to GitHub
+
+# Go back to terminal
+
+# Initialize Git (if not already done)
+git init
+git add .
+git commit -m "Added reproducible ML pipeline with virtual environment"
+git remote add origin https://github.com/YourUsername/ml_reproducible_pipeline.git
+git branch -M main
+git push -u origin main
