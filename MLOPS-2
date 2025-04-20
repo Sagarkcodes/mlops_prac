@@ -1,3 +1,7 @@
+mkdir model-versioning
+cd model-versioning
+
+
 touch train_model.py
 
 
@@ -43,4 +47,11 @@ print(f"Model saved as {version_name}")
 python train_model.py 50
 
 touch results.txt
+
+
+git init
+git add .
+git commit -m "Model training script and versioned models added"
+git remote add origin https://github.com/your-username/your-repo.git
+git push -u origin main
 
