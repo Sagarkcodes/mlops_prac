@@ -1,0 +1,48 @@
+cd ~/Desktop  # Or wherever you want your project
+mkdir mlops_eda_project
+cd mlops_eda_project
+
+python -m venv venv
+source venv/Scripts/activate  # Windows
+
+source venv/bin/activate      # macOS/Linux
+
+Step 2: Install Required Libraries
+
+pip install pandas seaborn matplotlib notebook pandas-profiling
+
+Step 3: Start Jupyter Notebook
+jupyter notebook
+Create a new notebook: EDA_Titanic.ipynb
+
+Step 4: Do EDA in the Notebook
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Load dataset
+df = sns.load_dataset("titanic")
+
+# Data cleaning
+df['age'].fillna(df['age'].median(), inplace=True)
+df.dropna(subset=['embarked'], inplace=True)
+
+# Visualizations
+sns.histplot(df['age'], kde=True)
+plt.title("Age Distribution")
+plt.show()
+
+Step 6: Export Notebook to PDF
+
+Step 7: Save Dependencies
+pip freeze > requirements.txt
+
+Step 8: Upload to GitHub
+
+git init
+git remote add origin https://github.com/YOUR_USERNAME/mlops_eda_project.git
+git add .
+git commit -m "Added EDA notebook and report"
+git push -u origin master
